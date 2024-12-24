@@ -7,6 +7,9 @@ spring:
     username: root
     password: ${DB_PASSWORD}
 
+server:
+  port: 3001
+
 logging:
   level:
     org.hibernate.orm.connections.pooling: WARN
