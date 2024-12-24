@@ -43,9 +43,9 @@ ALTER TABLE `MESSAGES` ADD FOREIGN KEY (`rental_id`) REFERENCES `RENTALS` (`id`)
 
 INSERT INTO USERS (id, email, name, password, created_at, updated_at)
 VALUES
-    (1, 'user1@example.com', 'User One', 'password1', '2022-01-01 00:00:00', '2022-01-01 00:00:00'),
-    (2, 'user2@example.com', 'User Two', 'password2', '2022-02-01 00:00:00', '2022-02-01 00:00:00'),
-    (3, 'user3@example.com', 'User Three', 'password3', '2022-03-01 00:00:00', '2022-03-01 00:00:00');
+    (1, 'user1@example.com', 'User One', 'password1', '2022-01-01 00:00:00', '2022-01-02 01:00:00'),
+    (2, 'user2@example.com', 'User Two', 'password2', '2022-02-01 02:00:00', '2022-02-02 03:00:00'),
+    (3, 'user3@example.com', 'User Three', 'password3', '2022-03-01 04:00:00', '2022-03-02 05:00:00');
 
 INSERT INTO `RENTALS` (id, name, surface, price, picture, description, owner_id, created_at, updated_at)
 VALUES
