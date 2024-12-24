@@ -1,3 +1,5 @@
+# Spring configuration
+# Database source configuration
 spring:
   application:
     name: ChaTop-back
@@ -7,9 +9,18 @@ spring:
     username: root
     password: ${DB_PASSWORD}
 
+# Server configuration
 server:
   port: 3001
 
+# Logging configuration
 logging:
   level:
     org.hibernate.orm.connections.pooling: WARN
+
+# Springdoc configuration
+springdoc:
+  open-api:
+    info:
+      title: "ChaTop API"
+      version: v1
