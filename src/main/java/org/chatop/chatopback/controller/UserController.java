@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.UserDto;
-import org.chatop.chatopback.repository.UserRepository;
+import org.chatop.chatopback.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
 
     @GetMapping("/user/{id}")
@@ -39,13 +39,8 @@ public class UserController {
                     """)))
     })
     public ResponseEntity<UserDto> getUserById(@PathVariable Integer id) {
-        return userRepository.findById(id)
-                .map(user -> ResponseEntity.ok(new UserDto(
-                        user.getId(),
-                        user.getName(),
-                        user.getEmail(),
-                        user.getCreatedAt(),
-                        user.getUpdatedAt())))
+        return userService.getUserById(id)
+                .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 }
