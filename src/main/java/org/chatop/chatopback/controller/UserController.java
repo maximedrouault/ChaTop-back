@@ -8,12 +8,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.UserDto;
 import org.chatop.chatopback.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,17 +28,16 @@ public class UserController {
                     schema = @Schema(implementation = UserDto.class))),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json",
                     schema = @Schema(example = """
-                    {
-                        "timestamp": "2024-12-24T15:37:37.870+00:00",
-                        "status": 404,
-                        "error": "Not Found",
-                        "path": "/user/0"
-                    }
+                        {
+                            "status": 404,
+                            "path": "/user/0",
+                            "error": "Not Found",
+                            "timestamp": "2024-12-25T13:49:26.1972492",
+                            "message": "User not found"
+                        }
                     """)))
     })
     public ResponseEntity<UserDto> getUserById(@PathVariable Integer id) {
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 }
