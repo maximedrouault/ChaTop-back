@@ -11,10 +11,12 @@ import org.chatop.chatopback.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
@@ -33,7 +35,7 @@ public class UserController {
                             "title": "Not Found",
                             "status": 404,
                             "detail": "User not found",
-                            "instance": "/user/0"
+                            "instance": "/api/user/0"
                         }
                     """)))
     })
