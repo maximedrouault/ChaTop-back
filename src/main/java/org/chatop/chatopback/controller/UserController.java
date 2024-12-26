@@ -21,7 +21,7 @@ public class UserController {
 
 
     @GetMapping("/user/{id}")
-    @Operation(summary = "Get a user by id", parameters = {
+    @Operation(summary = "Get a User by ID", parameters = {
             @Parameter(name = "id", description = "ID of the user to be retrieved", required = true, example = "1"),
     }, responses = {
             @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json",
@@ -29,11 +29,11 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json",
                     schema = @Schema(example = """
                         {
+                            "type": "about:blank",
+                            "title": "Not Found",
                             "status": 404,
-                            "path": "/user/0",
-                            "error": "Not Found",
-                            "timestamp": "2024-12-25T13:49:26.1972492",
-                            "message": "User not found"
+                            "detail": "User not found",
+                            "instance": "/user/0"
                         }
                     """)))
     })
