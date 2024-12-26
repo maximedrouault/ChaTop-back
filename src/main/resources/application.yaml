@@ -1,13 +1,17 @@
 # Spring configuration
-# Database source configuration
 spring:
   application:
     name: ChaTop-back
 
+  # Database source configuration
   datasource:
     url: jdbc:mysql://localhost:3306/chatop?serverTimezone=UTC
     username: root
     password: ${DB_PASSWORD}
+
+  # Jackson property naming strategy configuration
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 
 # Server configuration
 server:

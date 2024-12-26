@@ -17,7 +17,7 @@ public class UserService {
 
     public UserDto getUserById(Integer userId) {
         return userRepository.findById(userId)
-                .map(userMapper::userToUserDto)
+                .map(userMapper::toDto)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 }
