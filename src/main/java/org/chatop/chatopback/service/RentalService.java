@@ -3,6 +3,7 @@ package org.chatop.chatopback.service;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.RentalDto;
 import org.chatop.chatopback.dto.RentalsDto;
+import org.chatop.chatopback.exception.RentalsNotFoundException;
 import org.chatop.chatopback.mapper.RentalMapper;
 import org.chatop.chatopback.repository.RentalRepository;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,10 @@ public class RentalService {
                 .stream()
                 .map(rentalMapper::toDto)
                 .toList();
+
+        if (rentals.isEmpty()) {
+            throw new RentalsNotFoundException();
+        }
 
         return new RentalsDto(rentals);
     }

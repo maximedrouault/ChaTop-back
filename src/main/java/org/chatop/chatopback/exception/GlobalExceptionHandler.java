@@ -16,7 +16,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseStatusException handleUserNotFoundException(UserNotFoundException exception, HttpServletRequest request) {
-        log.error("{} with ID: {}, Path={}", exception.getMessage(), exception.getUserId(), request.getRequestURI());
+        log.warn("{} with ID: {}, Path={}", exception.getMessage(), exception.getUserId(), request.getRequestURI());
+
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    @ExceptionHandler(RentalsNotFoundException.class)
+    public ResponseStatusException handleRentalsNotFoundException(RentalsNotFoundException exception, HttpServletRequest request) {
+        log.warn("{} Path={}", exception.getMessage(), request.getRequestURI());
 
         return new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
     }
