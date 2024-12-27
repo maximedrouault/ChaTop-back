@@ -22,5 +22,4 @@ public record MessageDto(
         @Positive
         Integer rentalId
 
-  ) implements Serializable {
-}
+  ) implements Serializable {}

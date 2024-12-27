@@ -10,5 +10,4 @@ public record RentalsDto(
 
         List<RentalDto> rentals
 
-        ) implements Serializable {
-}
+) implements Serializable {}

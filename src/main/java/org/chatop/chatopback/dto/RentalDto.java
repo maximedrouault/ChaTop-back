@@ -25,5 +25,4 @@ public record RentalDto(
         @JsonFormat(pattern = "yyyy/MM/dd")
         LocalDateTime updatedAt
 
-        ) implements Serializable {
-}
+) implements Serializable {}

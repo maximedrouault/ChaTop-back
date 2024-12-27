@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.UserDto;
 import org.chatop.chatopback.service.UserService;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,15 +30,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = UserDto.class))),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json",
-                    schema = @Schema(example = """
-                        {
-                            "type": "about:blank",
-                            "title": "Not Found",
-                            "status": 404,
-                            "detail": "User not found",
-                            "instance": "/api/user/0"
-                        }
-                    """)))
+                    schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<UserDto> getUserById(@PathVariable Integer id) {
         return ResponseEntity.ok(userService.getUserById(id));
