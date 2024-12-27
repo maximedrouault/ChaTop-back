@@ -1,9 +1,12 @@
 package org.chatop.chatopback.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -12,6 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "messages")
+@DynamicInsert
 public class Message {
 
     @Id
@@ -19,6 +23,7 @@ public class Message {
     private Integer id;
 
     @Column(length = 2000)
+    @NotBlank
     private String message;
 
     @CreationTimestamp
@@ -30,10 +35,12 @@ public class Message {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_id")
+    @NotNull
     private Rental rental;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
 }
