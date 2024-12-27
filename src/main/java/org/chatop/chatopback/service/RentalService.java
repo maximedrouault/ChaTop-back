@@ -3,6 +3,7 @@ package org.chatop.chatopback.service;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.RentalDto;
 import org.chatop.chatopback.dto.RentalsDto;
+import org.chatop.chatopback.exception.RentalNotFoundException;
 import org.chatop.chatopback.exception.RentalsNotFoundException;
 import org.chatop.chatopback.mapper.RentalMapper;
 import org.chatop.chatopback.repository.RentalRepository;
@@ -29,5 +30,11 @@ public class RentalService {
         }
 
         return new RentalsDto(rentals);
+    }
+
+    public RentalDto getRentalById(Integer id) {
+        return rentalRepository.findById(id)
+                .map(rentalMapper::toDto)
+                .orElseThrow(() -> new RentalNotFoundException(id));
     }
 }

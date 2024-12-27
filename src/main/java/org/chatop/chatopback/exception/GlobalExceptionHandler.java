@@ -16,15 +16,30 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseStatusException handleUserNotFoundException(UserNotFoundException exception, HttpServletRequest request) {
-        log.warn("{} with ID: {}, Path={}", exception.getMessage(), exception.getUserId(), request.getRequestURI());
+        log.warn(formatLogMessage(exception.getMessage(), exception.getUserId(), request.getRequestURI()));
 
         return new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
     @ExceptionHandler(RentalsNotFoundException.class)
     public ResponseStatusException handleRentalsNotFoundException(RentalsNotFoundException exception, HttpServletRequest request) {
-        log.warn("{} Path={}", exception.getMessage(), request.getRequestURI());
+        log.warn(formatLogMessage(exception.getMessage(), null, request.getRequestURI()));
 
         return new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
     }
+
+    @ExceptionHandler(RentalNotFoundException.class)
+    public ResponseStatusException handleRentalNotFoundException(RentalNotFoundException exception, HttpServletRequest request) {
+        log.warn(formatLogMessage(exception.getMessage(), exception.getRentalId(), request.getRequestURI()));
+
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+
+    private String formatLogMessage(String entity, Object id, String path) {
+        return id != null
+                ? String.format("%s with ID: %s, Path=%s", entity, id, path)
+                : String.format("%s, Path=%s", entity, path);
+    }
+
 }

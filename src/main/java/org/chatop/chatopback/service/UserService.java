@@ -15,9 +15,9 @@ public class UserService {
     private final UserMapper userMapper;
 
 
-    public UserDto getUserById(Integer userId) {
-        return userRepository.findById(userId)
+    public UserDto getUserById(Integer id) {
+        return userRepository.findById(id)
                 .map(userMapper::toDto)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 }

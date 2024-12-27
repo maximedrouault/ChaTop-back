@@ -17,6 +17,7 @@ public record RentalDto(
         BigDecimal price,
         String picture,
         String description,
+        Integer ownerId,
 
         @JsonFormat(pattern = "yyyy/MM/dd")
         LocalDateTime createdAt,
