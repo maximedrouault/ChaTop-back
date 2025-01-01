@@ -13,6 +13,17 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
 
+  # Spring Cloud AWS S3 configuration
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
+      region:
+        static: eu-west-3
+      s3:
+        bucket: ${AWS_BUCKET_NAME}
+
 # Server configuration
 server:
   port: 3001
@@ -25,6 +36,7 @@ server:
 logging:
   level:
     org.hibernate.orm.connections.pooling: WARN
+    io.awspring.cloud: DEBUG
 
 # Springdoc configuration
 springdoc:

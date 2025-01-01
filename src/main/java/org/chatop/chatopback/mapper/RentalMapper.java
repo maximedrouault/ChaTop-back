@@ -12,6 +12,11 @@ public interface RentalMapper {
     @Mapping(source = "owner.id", target = "ownerId")
     RentalDto toDto(Rental rental);
 
+    @Mapping(source = "rental.owner.id", target = "ownerId")
+    @Mapping(source = "signedPictureUrl", target = "picture")
+    RentalDto toDto(Rental rental, String signedPictureUrl);
+
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Rental partialUpdate(RentalDto rentalDto, @MappingTarget Rental rental);
 }
