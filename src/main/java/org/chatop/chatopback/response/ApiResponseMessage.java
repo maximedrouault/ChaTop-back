@@ -6,4 +6,5 @@ import lombok.experimental.UtilityClass;
 public class ApiResponseMessage {
 
     public static final String MESSAGE_SEND_SUCCESS = "Message send with success";
+    public static final String RENTAL_CREATE_SUCCESS = "Rental created !";
 }

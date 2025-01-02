@@ -1,22 +1,25 @@
 package org.chatop.chatopback.mapper;
 
-import org.chatop.chatopback.dto.RentalDto;
+import org.chatop.chatopback.dto.RentalRequestDto;
+import org.chatop.chatopback.dto.RentalResponseDto;
 import org.chatop.chatopback.entity.Rental;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RentalMapper {
 
-    Rental toEntity(RentalDto rentalDto);
+    @Mapping(source = "ownerId", target = "owner.id", defaultValue = "1") // TODO: remove default value when authentication is implemented
+    @Mapping(target = "picture", ignore = true)
+    Rental toEntity(RentalRequestDto rentalRequestDto);
 
     @Mapping(source = "owner.id", target = "ownerId")
-    RentalDto toDto(Rental rental);
+    RentalResponseDto toDto(Rental rental);
 
     @Mapping(source = "rental.owner.id", target = "ownerId")
     @Mapping(source = "signedPictureUrl", target = "picture")
-    RentalDto toDto(Rental rental, String signedPictureUrl);
+    RentalResponseDto toDto(Rental rental, String signedPictureUrl);
 
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Rental partialUpdate(RentalDto rentalDto, @MappingTarget Rental rental);
+    Rental partialUpdate(RentalResponseDto rentalResponseDto, @MappingTarget Rental rental);
 }

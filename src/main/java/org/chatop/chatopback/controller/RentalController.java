@@ -6,15 +6,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.RentalDto;
+import org.chatop.chatopback.dto.RentalRequestDto;
+import org.chatop.chatopback.dto.RentalResponseDto;
 import org.chatop.chatopback.dto.RentalsDto;
 import org.chatop.chatopback.service.RentalService;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +31,7 @@ public class RentalController {
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<RentalsDto> getAllRentals() {
+
         return ResponseEntity.ok(rentalService.getAllRentals());
     }
 
@@ -40,11 +40,19 @@ public class RentalController {
             @Parameter(name = "id", description = "ID of the rental to be retrieved", required = true, example = "1"),
     }, responses = {
             @ApiResponse(responseCode = "200", description = "Rental found", content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = RentalDto.class))),
+                    schema = @Schema(implementation = RentalResponseDto.class))),
             @ApiResponse(responseCode = "404", description = "Rental not found", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<RentalDto> getRentalById(@PathVariable Integer id) {
+    public ResponseEntity<RentalResponseDto> getRentalById(@PathVariable Integer id) {
+
         return ResponseEntity.ok(rentalService.getRentalById(id));
+    }
+
+    @PostMapping(value = "/rentals")
+    public ResponseEntity<org.chatop.chatopback.response.ApiResponse> createRental(@ModelAttribute RentalRequestDto rentalRequestDto,
+                                                                                   @RequestPart("picture") MultipartFile pictureFile) {
+
+        return ResponseEntity.ok(rentalService.createRental(rentalRequestDto, pictureFile));
     }
 }

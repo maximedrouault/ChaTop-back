@@ -24,6 +24,12 @@ spring:
       s3:
         bucket: ${AWS_BUCKET_NAME}
 
+  # Multipart configuration
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
 # Server configuration
 server:
   port: 3001

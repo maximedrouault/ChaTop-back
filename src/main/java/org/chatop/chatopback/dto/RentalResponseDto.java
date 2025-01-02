@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 /**
  * DTO for {@link org.chatop.chatopback.entity.Rental}
  */
-public record RentalDto(
+public record RentalResponseDto(
 
         Integer id,
         String name,

@@ -8,6 +8,6 @@ import java.util.List;
  */
 public record RentalsDto(
 
-        List<RentalDto> rentals
+        List<RentalResponseDto> rentals
 
 ) implements Serializable {}
