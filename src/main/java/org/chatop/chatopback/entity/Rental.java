@@ -1,11 +1,11 @@
 package org.chatop.chatopback.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -20,20 +20,35 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank
+    @Size(max = 255)
+    @Column(nullable = false)
     private String name;
 
-    @Column(precision = 10)
-    private BigDecimal surface;
+    @NotNull
+    @Positive
+    @Digits(integer = 10, fraction = 0)
+    @Column(nullable = false)
+    private Long surface;
 
-    @Column(precision = 10)
-    private BigDecimal price;
+    @NotNull
+    @PositiveOrZero
+    @Digits(integer = 10, fraction = 0)
+    @Column(nullable = false)
+    private Long price;
 
+    @NotBlank
+    @Size(max = 255)
+    @Column(nullable = false)
     private String picture;
 
-    @Column(length = 2000)
+    @NotBlank
+    @Size(max = 2000)
+    @Column(nullable = false, length = 2000)
     private String description;
 
     @CreationTimestamp
+    @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

@@ -16,6 +16,7 @@ public class AwsS3Service {
 
     private final S3Template s3Template;
 
+
     @Value("${aws.bucket.name}")
     private String bucketName;
 

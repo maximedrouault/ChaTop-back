@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.CreateRentalRequestDto;
 import org.chatop.chatopback.dto.RentalResponseDto;
@@ -50,7 +51,7 @@ public class RentalController {
     }
 
     @PostMapping(value = "/rentals")
-    public ResponseEntity<org.chatop.chatopback.response.ApiResponse> createRental(@ModelAttribute CreateRentalRequestDto createRentalRequestDto,
+    public ResponseEntity<org.chatop.chatopback.response.ApiResponse> createRental(@Valid @ModelAttribute CreateRentalRequestDto createRentalRequestDto,
                                                                                    @RequestPart("picture") MultipartFile pictureFile) {
 
         return ResponseEntity.ok(rentalService.createRental(createRentalRequestDto, pictureFile));
