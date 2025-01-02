@@ -2,6 +2,7 @@ package org.chatop.chatopback.service;
 
 import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
+import org.chatop.chatopback.exception.FileUploadException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,8 +31,8 @@ public class AwsS3Service {
 
         try {
             s3Template.upload(bucketName, key, file.getInputStream());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to upload file to AWS-S3", e);
+        } catch (Exception exception) {
+            throw new FileUploadException(exception);
         }
     }
 }

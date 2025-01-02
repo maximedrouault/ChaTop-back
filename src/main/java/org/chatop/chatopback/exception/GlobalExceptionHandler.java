@@ -43,6 +43,13 @@ public class GlobalExceptionHandler {
         return new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(FileUploadException.class)
+    public ResponseStatusException handleFileUploadException(FileUploadException exception) {
+        log.error(exception.getCause());
+
+        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+    }
+
 
     private String formatLogMessage(String entity, Object id, String path) {
         return id != null
