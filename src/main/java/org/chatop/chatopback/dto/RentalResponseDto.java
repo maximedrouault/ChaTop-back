@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.LocalDateTime;
 
 /**
@@ -15,7 +16,7 @@ public record RentalResponseDto(
         String name,
         BigDecimal surface,
         BigDecimal price,
-        String picture,
+        URL picture,
         String description,
         Integer ownerId,
 

@@ -8,9 +8,8 @@ import java.math.BigDecimal;
 /**
  * DTO for {@link org.chatop.chatopback.entity.Rental}
  */
-public record RentalRequestDto(
+public record CreateRentalRequestDto(
 
-        Integer id,
         String name,
         BigDecimal surface,
         BigDecimal price,

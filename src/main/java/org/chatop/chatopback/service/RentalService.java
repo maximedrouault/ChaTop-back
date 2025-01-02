@@ -1,7 +1,7 @@
 package org.chatop.chatopback.service;
 
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.RentalRequestDto;
+import org.chatop.chatopback.dto.CreateRentalRequestDto;
 import org.chatop.chatopback.dto.RentalResponseDto;
 import org.chatop.chatopback.dto.RentalsDto;
 import org.chatop.chatopback.entity.Rental;
@@ -11,11 +11,10 @@ import org.chatop.chatopback.mapper.RentalMapper;
 import org.chatop.chatopback.repository.RentalRepository;
 import org.chatop.chatopback.response.ApiResponse;
 import org.chatop.chatopback.response.ApiResponseMessage;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Duration;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,15 +26,12 @@ public class RentalService {
     private final RentalMapper rentalMapper;
     private final AwsS3Service awsS3Service;
 
-    @Value("${aws.bucket.name}")
-    private String bucketName;
-
 
     public RentalsDto getAllRentals() {
         List<RentalResponseDto> rentals = rentalRepository.findAll()
                 .parallelStream()
                 .map(rental -> {
-                    String signedPictureUrl = generateSignedPictureUrl(rental.getPicture());
+                    URL signedPictureUrl = generateSignedPictureUrl(rental.getPicture());
 
                     return rentalMapper.toDto(rental, signedPictureUrl);
                 })
@@ -51,21 +47,21 @@ public class RentalService {
     public RentalResponseDto getRentalById(Integer id) {
         return rentalRepository.findById(id)
                 .map(rental -> {
-                    String signedPictureUrl = generateSignedPictureUrl(rental.getPicture());
+                    URL signedPictureUrl = generateSignedPictureUrl(rental.getPicture());
 
                     return rentalMapper.toDto(rental, signedPictureUrl);
                 })
                 .orElseThrow(() -> new RentalNotFoundException(id));
     }
 
-    public ApiResponse createRental(RentalRequestDto rentalRequestDto, MultipartFile pictureFile) {
+    public ApiResponse createRental(CreateRentalRequestDto createRentalRequestDto, MultipartFile pictureFile) {
         String mimeType = pictureFile.getContentType();
-        String pictureKey = "rental_" + UUID.randomUUID() + "." + mimeType.split("/")[1];
+        String key = "rental_" + UUID.randomUUID() + "." + mimeType.split("/")[1];
 
-        awsS3Service.uploadFile(bucketName, pictureKey, pictureFile);
+        awsS3Service.uploadFile(key, pictureFile);
 
-        Rental rental = rentalMapper.toEntity(rentalRequestDto);
-        rental.setPicture(pictureKey);
+        Rental rental = rentalMapper.toEntity(createRentalRequestDto);
+        rental.setPicture(key);
 
         rentalRepository.save(rental);
 
@@ -73,7 +69,7 @@ public class RentalService {
     }
 
 
-    private String generateSignedPictureUrl(String key) {
-        return awsS3Service.createSignedGetURL(bucketName, key, Duration.ofMinutes(5)).toString();
+    private URL generateSignedPictureUrl(String key) {
+        return awsS3Service.createSignedGetURL(key);
     }
 }

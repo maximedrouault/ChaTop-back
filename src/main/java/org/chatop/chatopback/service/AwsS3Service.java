@@ -2,6 +2,7 @@ package org.chatop.chatopback.service;
 
 import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,13 +15,18 @@ public class AwsS3Service {
 
     private final S3Template s3Template;
 
+    @Value("${aws.bucket.name}")
+    private String bucketName;
 
-    public URL createSignedGetURL(String bucketName, String key, Duration duration) {
+    private final Duration signedUrlExpiration = Duration.ofMinutes(5);
 
-        return s3Template.createSignedGetURL(bucketName, key, duration);
+
+    public URL createSignedGetURL(String key) {
+
+        return s3Template.createSignedGetURL(bucketName, key, signedUrlExpiration);
     }
 
-    public void uploadFile(String bucketName, String key, MultipartFile file) {
+    public void uploadFile(String key, MultipartFile file) {
 
         try {
             s3Template.upload(bucketName, key, file.getInputStream());
