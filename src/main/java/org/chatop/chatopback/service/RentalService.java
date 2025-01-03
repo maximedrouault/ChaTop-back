@@ -1,9 +1,10 @@
 package org.chatop.chatopback.service;
 
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.CreateRentalRequestDto;
-import org.chatop.chatopback.dto.RentalResponseDto;
-import org.chatop.chatopback.dto.RentalsDto;
+import org.chatop.chatopback.dto.rental.CreateRentalRequestDto;
+import org.chatop.chatopback.dto.rental.RentalResponseDto;
+import org.chatop.chatopback.dto.rental.RentalsDto;
+import org.chatop.chatopback.dto.rental.UpdateRentalRequestDto;
 import org.chatop.chatopback.entity.Rental;
 import org.chatop.chatopback.exception.EntityPersistenceException;
 import org.chatop.chatopback.exception.InvalidMimeTypeException;
@@ -32,6 +33,7 @@ public class RentalService {
 
 
     public RentalsDto getAllRentals() {
+
         List<RentalResponseDto> rentals = rentalRepository.findAll()
                 .parallelStream()
                 .map(rental -> {
@@ -49,6 +51,7 @@ public class RentalService {
     }
 
     public RentalResponseDto getRentalById(Integer id) {
+
         return rentalRepository.findById(id)
                 .map(rental -> {
                     URL signedPictureUrl = generateSignedPictureUrl(rental.getPicture());
@@ -60,6 +63,7 @@ public class RentalService {
 
     @Transactional
     public ApiResponse createRental(CreateRentalRequestDto createRentalRequestDto, MultipartFile pictureFile) {
+
         String key = Optional.ofNullable(pictureFile.getContentType())
                 .map(mimeType -> "rental_" + UUID.randomUUID() + "." + mimeType.split("/")[1])
                 .orElseThrow(() -> new InvalidMimeTypeException(pictureFile));
@@ -78,6 +82,19 @@ public class RentalService {
             awsS3Service.deleteFile(key);
             throw new EntityPersistenceException(exception);
         }
+    }
+
+    public ApiResponse updateRental(Integer id, UpdateRentalRequestDto updateRentalRequestDto) {
+
+        return rentalRepository.findById(id)
+                .map(rental -> {
+                    Rental updatedRental = rentalMapper.partialUpdate(updateRentalRequestDto, rental);
+
+                    rentalRepository.save(updatedRental);
+
+                    return new ApiResponse(ApiResponseMessage.RENTAL_UPDATE_SUCCESS);
+                })
+                .orElseThrow(() -> new RentalNotFoundException(id));
     }
 
 

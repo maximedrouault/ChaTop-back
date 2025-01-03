@@ -1,4 +1,4 @@
-package org.chatop.chatopback.dto;
+package org.chatop.chatopback.dto.rental;
 
 import jakarta.validation.constraints.*;
 import org.chatop.chatopback.validation.ImageFile;

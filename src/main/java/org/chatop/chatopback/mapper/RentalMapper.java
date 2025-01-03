@@ -1,7 +1,8 @@
 package org.chatop.chatopback.mapper;
 
-import org.chatop.chatopback.dto.CreateRentalRequestDto;
-import org.chatop.chatopback.dto.RentalResponseDto;
+import org.chatop.chatopback.dto.rental.CreateRentalRequestDto;
+import org.chatop.chatopback.dto.rental.RentalResponseDto;
+import org.chatop.chatopback.dto.rental.UpdateRentalRequestDto;
 import org.chatop.chatopback.entity.Rental;
 import org.mapstruct.*;
 
@@ -23,5 +24,5 @@ public interface RentalMapper {
 
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Rental partialUpdate(RentalResponseDto rentalResponseDto, @MappingTarget Rental rental);
+    Rental partialUpdate(UpdateRentalRequestDto updateRentalRequestDto, @MappingTarget Rental rental);
 }

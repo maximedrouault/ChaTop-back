@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.MessageDto;
+import org.chatop.chatopback.dto.message.MessageDto;
 import org.chatop.chatopback.response.ApiResponse;
 import org.chatop.chatopback.service.MessageService;
 import org.springframework.http.HttpStatus;

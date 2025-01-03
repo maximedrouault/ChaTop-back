@@ -1,4 +1,4 @@
-package org.chatop.chatopback.dto;
+package org.chatop.chatopback.dto.rental;
 
 import java.io.Serializable;
 import java.util.List;

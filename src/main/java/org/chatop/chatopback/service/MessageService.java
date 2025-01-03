@@ -1,7 +1,7 @@
 package org.chatop.chatopback.service;
 
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.MessageDto;
+import org.chatop.chatopback.dto.message.MessageDto;
 import org.chatop.chatopback.entity.Message;
 import org.chatop.chatopback.exception.RentalNotFoundException;
 import org.chatop.chatopback.exception.UserNotFoundException;

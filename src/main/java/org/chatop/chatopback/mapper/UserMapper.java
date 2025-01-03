@@ -1,6 +1,6 @@
 package org.chatop.chatopback.mapper;
 
-import org.chatop.chatopback.dto.UserDto;
+import org.chatop.chatopback.dto.user.UserDto;
 import org.chatop.chatopback.entity.User;
 import org.mapstruct.*;
 

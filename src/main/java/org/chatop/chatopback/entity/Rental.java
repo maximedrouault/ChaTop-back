@@ -5,6 +5,9 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -14,6 +17,8 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "rentals")
+@DynamicInsert
+@DynamicUpdate
 public class Rental {
 
     @Id
@@ -51,6 +56,7 @@ public class Rental {
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

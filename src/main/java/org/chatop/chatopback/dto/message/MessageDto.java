@@ -1,4 +1,4 @@
-package org.chatop.chatopback.dto;
+package org.chatop.chatopback.dto.message;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

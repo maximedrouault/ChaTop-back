@@ -7,9 +7,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.CreateRentalRequestDto;
-import org.chatop.chatopback.dto.RentalResponseDto;
-import org.chatop.chatopback.dto.RentalsDto;
+import org.chatop.chatopback.dto.rental.CreateRentalRequestDto;
+import org.chatop.chatopback.dto.rental.RentalResponseDto;
+import org.chatop.chatopback.dto.rental.RentalsDto;
+import org.chatop.chatopback.dto.rental.UpdateRentalRequestDto;
 import org.chatop.chatopback.service.RentalService;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -50,10 +51,17 @@ public class RentalController {
         return ResponseEntity.ok(rentalService.getRentalById(id));
     }
 
-    @PostMapping(value = "/rentals")
+    @PostMapping("/rentals")
     public ResponseEntity<org.chatop.chatopback.response.ApiResponse> createRental(@Valid @ModelAttribute CreateRentalRequestDto createRentalRequestDto,
                                                                                    @RequestPart("picture") MultipartFile pictureFile) {
 
         return ResponseEntity.ok(rentalService.createRental(createRentalRequestDto, pictureFile));
+    }
+
+    @PutMapping("/rentals/{id}")
+    public ResponseEntity<org.chatop.chatopback.response.ApiResponse> updateRental(@PathVariable Integer id,
+                                                                                   @Valid @ModelAttribute UpdateRentalRequestDto updateRentalRequestDto) {
+
+        return ResponseEntity.ok(rentalService.updateRental(id, updateRentalRequestDto));
     }
 }

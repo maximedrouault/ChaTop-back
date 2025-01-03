@@ -1,24 +1,18 @@
-package org.chatop.chatopback.dto;
+package org.chatop.chatopback.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.net.URL;
 import java.time.LocalDateTime;
 
 /**
- * DTO for {@link org.chatop.chatopback.entity.Rental}
+ * DTO for {@link org.chatop.chatopback.entity.User}
  */
-public record RentalResponseDto(
+public record UserDto(
 
         Integer id,
         String name,
-        BigDecimal surface,
-        BigDecimal price,
-        URL picture,
-        String description,
-        Integer ownerId,
+        String email,
 
         @JsonFormat(pattern = "yyyy/MM/dd")
         LocalDateTime createdAt,

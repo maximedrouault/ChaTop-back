@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.UserDto;
+import org.chatop.chatopback.dto.user.UserDto;
 import org.chatop.chatopback.service.UserService;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;

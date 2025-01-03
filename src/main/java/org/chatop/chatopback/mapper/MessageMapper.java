@@ -1,6 +1,6 @@
 package org.chatop.chatopback.mapper;
 
-import org.chatop.chatopback.dto.MessageDto;
+import org.chatop.chatopback.dto.message.MessageDto;
 import org.chatop.chatopback.entity.Message;
 import org.mapstruct.*;
 
