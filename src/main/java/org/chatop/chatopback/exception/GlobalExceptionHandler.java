@@ -43,8 +43,22 @@ public class GlobalExceptionHandler {
         return new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(FileUploadException.class)
-    public ResponseStatusException handleFileUploadException(FileUploadException exception) {
+    @ExceptionHandler(AwsS3FileUploadException.class)
+    public ResponseStatusException handleAwsS3FileUploadException(AwsS3FileUploadException exception) {
+        log.error(exception.getCause());
+
+        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+    }
+
+    @ExceptionHandler(AwsS3FileDeleteException.class)
+    public ResponseStatusException handleAwsS3FileDeleteException(AwsS3FileDeleteException exception) {
+        log.error(exception.getCause());
+
+        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+    }
+
+    @ExceptionHandler(EntityPersistenceException.class)
+    public ResponseStatusException handleEntityPersistenceException(EntityPersistenceException exception) {
         log.error(exception.getCause());
 
         return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());

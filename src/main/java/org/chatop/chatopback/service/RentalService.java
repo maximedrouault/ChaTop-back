@@ -5,6 +5,7 @@ import org.chatop.chatopback.dto.CreateRentalRequestDto;
 import org.chatop.chatopback.dto.RentalResponseDto;
 import org.chatop.chatopback.dto.RentalsDto;
 import org.chatop.chatopback.entity.Rental;
+import org.chatop.chatopback.exception.EntityPersistenceException;
 import org.chatop.chatopback.exception.RentalNotFoundException;
 import org.chatop.chatopback.exception.RentalsNotFoundException;
 import org.chatop.chatopback.mapper.RentalMapper;
@@ -12,6 +13,7 @@ import org.chatop.chatopback.repository.RentalRepository;
 import org.chatop.chatopback.response.ApiResponse;
 import org.chatop.chatopback.response.ApiResponseMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URL;
@@ -54,18 +56,25 @@ public class RentalService {
                 .orElseThrow(() -> new RentalNotFoundException(id));
     }
 
+    @Transactional
     public ApiResponse createRental(CreateRentalRequestDto createRentalRequestDto, MultipartFile pictureFile) {
         String mimeType = pictureFile.getContentType();
         String key = "rental_" + UUID.randomUUID() + "." + mimeType.split("/")[1];
 
-        awsS3Service.uploadFile(key, pictureFile);
+        try {
+            awsS3Service.uploadFile(key, pictureFile);
 
-        Rental rental = rentalMapper.toEntity(createRentalRequestDto);
-        rental.setPicture(key);
+            Rental rental = rentalMapper.toEntity(createRentalRequestDto);
+            rental.setPicture(key);
 
-        rentalRepository.save(rental);
+            rentalRepository.save(rental);
 
-        return new ApiResponse(ApiResponseMessage.RENTAL_CREATE_SUCCESS);
+            return new ApiResponse(ApiResponseMessage.RENTAL_CREATE_SUCCESS);
+
+        } catch (Exception exception) {
+            awsS3Service.deleteFile(key);
+            throw new EntityPersistenceException(exception);
+        }
     }
 
 
