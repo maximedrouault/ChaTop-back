@@ -26,6 +26,7 @@ public record CreateRentalRequestDto(
         Long price,
 
         @ImageFile
+        @NotNull
         MultipartFile picture,
 
         @NotBlank

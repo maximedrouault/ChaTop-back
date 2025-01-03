@@ -6,6 +6,7 @@ import org.chatop.chatopback.dto.RentalResponseDto;
 import org.chatop.chatopback.dto.RentalsDto;
 import org.chatop.chatopback.entity.Rental;
 import org.chatop.chatopback.exception.EntityPersistenceException;
+import org.chatop.chatopback.exception.InvalidMimeTypeException;
 import org.chatop.chatopback.exception.RentalNotFoundException;
 import org.chatop.chatopback.exception.RentalsNotFoundException;
 import org.chatop.chatopback.mapper.RentalMapper;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -58,8 +60,9 @@ public class RentalService {
 
     @Transactional
     public ApiResponse createRental(CreateRentalRequestDto createRentalRequestDto, MultipartFile pictureFile) {
-        String mimeType = pictureFile.getContentType();
-        String key = "rental_" + UUID.randomUUID() + "." + mimeType.split("/")[1];
+        String key = Optional.ofNullable(pictureFile.getContentType())
+                .map(mimeType -> "rental_" + UUID.randomUUID() + "." + mimeType.split("/")[1])
+                .orElseThrow(() -> new InvalidMimeTypeException(pictureFile));
 
         try {
             awsS3Service.uploadFile(key, pictureFile);

@@ -19,21 +19,21 @@ public class GlobalExceptionHandler {
     public ResponseStatusException handleUserNotFoundException(UserNotFoundException exception, HttpServletRequest request) {
         log.warn(formatLogMessage(exception.getMessage(), exception.getUserId(), request.getRequestURI()));
 
-        return new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        return new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RentalsNotFoundException.class)
     public ResponseStatusException handleRentalsNotFoundException(RentalsNotFoundException exception, HttpServletRequest request) {
         log.warn(formatLogMessage(exception.getMessage(), null, request.getRequestURI()));
 
-        return new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        return new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RentalNotFoundException.class)
     public ResponseStatusException handleRentalNotFoundException(RentalNotFoundException exception, HttpServletRequest request) {
         log.warn(formatLogMessage(exception.getMessage(), exception.getRentalId(), request.getRequestURI()));
 
-        return new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        return new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -47,21 +47,28 @@ public class GlobalExceptionHandler {
     public ResponseStatusException handleAwsS3FileUploadException(AwsS3FileUploadException exception) {
         log.error(exception.getCause());
 
-        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(AwsS3FileDeleteException.class)
     public ResponseStatusException handleAwsS3FileDeleteException(AwsS3FileDeleteException exception) {
         log.error(exception.getCause());
 
-        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EntityPersistenceException.class)
     public ResponseStatusException handleEntityPersistenceException(EntityPersistenceException exception) {
         log.error(exception.getCause());
 
-        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(InvalidMimeTypeException.class)
+    public ResponseStatusException handleInvalidMimeTypeException(InvalidMimeTypeException exception) {
+        log.warn(exception.getMessage(), exception.getCause());
+
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
 
