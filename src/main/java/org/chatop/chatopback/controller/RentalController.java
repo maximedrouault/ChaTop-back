@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,17 @@ public class RentalController {
     }
 
     @PostMapping("/rentals")
+    @Operation(summary = "Create a new Rental", requestBody = @RequestBody(content = @Content(mediaType = "multipart/form-data",
+            schema = @Schema(implementation = CreateRentalRequestDto.class)))
+    , responses = {
+            @ApiResponse(responseCode = "200", description = "Rental created", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = org.chatop.chatopback.response.ApiResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error (Persistence error, AWS-S3 upload or delete error)",
+                    content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class)))
+    })
     public ResponseEntity<org.chatop.chatopback.response.ApiResponse> createRental(@Valid @ModelAttribute CreateRentalRequestDto createRentalRequestDto,
                                                                                    @RequestPart("picture") MultipartFile pictureFile) {
 
@@ -59,6 +71,19 @@ public class RentalController {
     }
 
     @PutMapping("/rentals/{id}")
+    @Operation(summary = "Update Rental by ID", requestBody = @RequestBody(content = @Content(mediaType = "multipart/form-data",
+            schema = @Schema(implementation = UpdateRentalRequestDto.class)))
+    , responses = {
+            @ApiResponse(responseCode = "200", description = "Rental updated", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = org.chatop.chatopback.response.ApiResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "404", description = "Rental not found", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error (Persistence error, AWS-S3 upload or delete error)",
+                    content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class)))
+    })
     public ResponseEntity<org.chatop.chatopback.response.ApiResponse> updateRental(@PathVariable Integer id,
                                                                                    @Valid @ModelAttribute UpdateRentalRequestDto updateRentalRequestDto) {
 
