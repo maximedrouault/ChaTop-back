@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestControllerAdvice
@@ -37,7 +39,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseStatusException handleMethodArgumentNotValidException(MethodArgumentNotValidException exception, HttpServletRequest request) {
+    public ResponseStatusException handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
+                                                                         HttpServletRequest request) {
         log.warn(formatLogMessage(exception.getMessage(), null, request.getRequestURI()));
 
         return new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -69,6 +72,30 @@ public class GlobalExceptionHandler {
         log.warn(exception.getMessage(), exception.getCause());
 
         return new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseStatusException handleHandlerMethodValidationException(HandlerMethodValidationException exception,
+                                                                          HttpServletRequest request) {
+        log.warn(formatLogMessage(exception.getMessage(), null, request.getRequestURI()));
+
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseStatusException handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception,
+                                                                             HttpServletRequest request) {
+        log.warn(formatLogMessage(exception.getMessage(), null, request.getRequestURI()));
+
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseStatusException handleGenericException(Exception exception, HttpServletRequest request) {
+        log.error("Unexpected error occurred: {}, Cause: {}, Path: {}",
+                exception.getMessage(), exception.getCause(), request.getRequestURI());
+
+        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

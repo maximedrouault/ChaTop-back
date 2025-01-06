@@ -7,12 +7,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.rental.CreateRentalRequestDto;
 import org.chatop.chatopback.dto.rental.RentalResponseDto;
 import org.chatop.chatopback.dto.rental.RentalsDto;
 import org.chatop.chatopback.dto.rental.UpdateRentalRequestDto;
 import org.chatop.chatopback.service.RentalService;
+import org.chatop.chatopback.validation.ImageFile;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,10 +46,12 @@ public class RentalController {
     }, responses = {
             @ApiResponse(responseCode = "200", description = "Rental found", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RentalResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "404", description = "Rental not found", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<RentalResponseDto> getRentalById(@PathVariable Integer id) {
+    public ResponseEntity<RentalResponseDto> getRentalById(@PathVariable @Positive Integer id) {
 
         return ResponseEntity.ok(rentalService.getRentalById(id));
     }
@@ -60,12 +64,13 @@ public class RentalController {
                     schema = @Schema(implementation = org.chatop.chatopback.response.ApiResponse.class))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class))),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error (Persistence error, AWS-S3 upload or delete error)",
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<org.chatop.chatopback.response.ApiResponse> createRental(@Valid @ModelAttribute CreateRentalRequestDto createRentalRequestDto,
-                                                                                   @RequestPart("picture") MultipartFile pictureFile) {
+    public ResponseEntity<org.chatop.chatopback.response.ApiResponse> createRental(
+            @Valid @ModelAttribute CreateRentalRequestDto createRentalRequestDto,
+            @RequestPart("picture") @ImageFile MultipartFile pictureFile) {
 
         return ResponseEntity.ok(rentalService.createRental(createRentalRequestDto, pictureFile));
     }
@@ -80,12 +85,13 @@ public class RentalController {
                     schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "404", description = "Rental not found", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class))),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error (Persistence error, AWS-S3 upload or delete error)",
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<org.chatop.chatopback.response.ApiResponse> updateRental(@PathVariable Integer id,
-                                                                                   @Valid @ModelAttribute UpdateRentalRequestDto updateRentalRequestDto) {
+    public ResponseEntity<org.chatop.chatopback.response.ApiResponse> updateRental(
+            @PathVariable @Positive Integer id,
+            @Valid @ModelAttribute UpdateRentalRequestDto updateRentalRequestDto) {
 
         return ResponseEntity.ok(rentalService.updateRental(id, updateRentalRequestDto));
     }

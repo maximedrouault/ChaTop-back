@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.user.UserDto;
 import org.chatop.chatopback.service.UserService;
@@ -29,10 +30,13 @@ public class UserController {
     }, responses = {
             @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = UserDto.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<UserDto> getUserById(@PathVariable Integer id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable @Positive Integer id) {
+
         return ResponseEntity.ok(userService.getUserById(id));
     }
 }

@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.message.MessageDto;
 import org.chatop.chatopback.response.ApiResponse;
 import org.chatop.chatopback.service.MessageService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +29,7 @@ public class MessageController {
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageDto.class))),
             responses = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Message saved",
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Message saved",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Bad request",
@@ -43,6 +42,6 @@ public class MessageController {
     public ResponseEntity<ApiResponse> saveMessage(@RequestBody @Valid MessageDto messageDto) {
         ApiResponse apiResponse = messageService.saveMessage(messageDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+        return ResponseEntity.ok().body(apiResponse);
     }
 }
