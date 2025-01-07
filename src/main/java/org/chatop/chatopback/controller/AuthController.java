@@ -1,31 +1,29 @@
 package org.chatop.chatopback.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.service.JwtService;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
+import org.chatop.chatopback.auth.AuthResponseDto;
+import org.chatop.chatopback.auth.LoginRequestDto;
+import org.chatop.chatopback.service.AuthService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final JwtService jwtService;
+    private final AuthService authService;
 
 
-    @GetMapping("/login")
-    public String login() {
-        return "logged in";
+    @GetMapping("/me")
+    public ResponseEntity<Void> login() {
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
-    public Map<String, String> getToken(Authentication authentication) {
+    public ResponseEntity<AuthResponseDto> getAuthToken(@Valid @RequestBody LoginRequestDto loginRequestDto) {
 
-        return Map.of("token", jwtService.generateToken(authentication)); // TODO: change to DTO
+        return ResponseEntity.ok(authService.getAuthToken(loginRequestDto));
     }
 }
