@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "messages")
 @DynamicInsert
+@DynamicUpdate
 public class Message {
 
     @Id
@@ -32,14 +34,15 @@ public class Message {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rental_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "rental_id", nullable = false)
     private Rental rental;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 }

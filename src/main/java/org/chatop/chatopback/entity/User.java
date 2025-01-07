@@ -1,13 +1,12 @@
 package org.chatop.chatopback.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -18,6 +17,8 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "users")
+@DynamicInsert
+@DynamicUpdate
 public class User {
 
     @Id
@@ -27,6 +28,7 @@ public class User {
     private Integer id;
 
     @NotBlank
+    @Email
     @Size(max = 255)
     @Column(nullable = false, unique = true)
     private String email;
@@ -46,12 +48,13 @@ public class User {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Rental> rentals = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Message> messages = new LinkedHashSet<>();
 
 }

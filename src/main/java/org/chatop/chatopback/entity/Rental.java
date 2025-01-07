@@ -57,13 +57,14 @@ public class Rental {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @OneToMany(mappedBy = "rental")
+    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Message> messages = new LinkedHashSet<>();
 
 }
