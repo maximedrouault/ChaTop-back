@@ -50,3 +50,7 @@ springdoc:
     info:
       title: "ChaTop API"
       version: v1
+
+# Jwt configuration
+jwt:
+  key: ${JWT_KEY}
