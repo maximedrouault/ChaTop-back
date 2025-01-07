@@ -1,8 +1,8 @@
 package org.chatop.chatopback.service;
 
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.auth.AuthResponseDto;
-import org.chatop.chatopback.auth.LoginRequestDto;
+import org.chatop.chatopback.dto.auth.AuthResponseDto;
+import org.chatop.chatopback.dto.auth.LoginRequestDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
