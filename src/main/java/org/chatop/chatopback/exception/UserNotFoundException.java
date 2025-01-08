@@ -9,8 +9,12 @@ public class UserNotFoundException extends RuntimeException{
 
 
     public UserNotFoundException(Integer userId) {
-
         super("User not found");
         this.userId = userId;
+    }
+
+    public UserNotFoundException(String email) {
+        super("User not found with email: " + email);
+        this.userId = null;
     }
 }

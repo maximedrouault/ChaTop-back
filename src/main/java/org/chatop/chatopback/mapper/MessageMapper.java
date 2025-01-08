@@ -7,7 +7,6 @@ import org.mapstruct.*;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface MessageMapper {
 
-    @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "rentalId", target = "rental.id")
     Message toEntity(MessageRequestDto messageRequestDto);
 

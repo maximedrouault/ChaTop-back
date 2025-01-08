@@ -3,6 +3,7 @@ package org.chatop.chatopback.dto.message;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 
@@ -11,13 +12,9 @@ import java.io.Serializable;
  */
 public record MessageRequestDto(
 
-        // TODO: improve validation constraints
         @NotBlank
+        @Size(max = 2000)
         String message,
-
-        @NotNull
-        @Positive
-        Integer userId,
 
         @NotNull
         @Positive
