@@ -1,16 +1,16 @@
 package org.chatop.chatopback.mapper;
 
-import org.chatop.chatopback.dto.user.UserDto;
+import org.chatop.chatopback.dto.user.UserResponseDto;
 import org.chatop.chatopback.entity.User;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
-    User toEntity(UserDto userDto);
+    User toEntity(UserResponseDto userResponseDto);
 
-    UserDto toDto(User user);
+    UserResponseDto toDto(User user);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    User partialUpdate(UserDto userDto, @MappingTarget User user);
+    User partialUpdate(UserResponseDto userResponseDto, @MappingTarget User user);
 }

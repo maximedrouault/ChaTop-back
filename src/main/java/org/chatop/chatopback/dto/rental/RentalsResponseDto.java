@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * DTO for {@link org.chatop.chatopback.entity.Rental}
  */
-public record RentalsDto(
+public record RentalsResponseDto(
 
         List<RentalResponseDto> rentals
 

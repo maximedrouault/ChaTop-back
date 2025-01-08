@@ -1,7 +1,7 @@
 package org.chatop.chatopback.service;
 
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.message.MessageDto;
+import org.chatop.chatopback.dto.message.MessageRequestDto;
 import org.chatop.chatopback.entity.Message;
 import org.chatop.chatopback.exception.RentalNotFoundException;
 import org.chatop.chatopback.exception.UserNotFoundException;
@@ -25,11 +25,11 @@ public class MessageService {
 
 
     @Transactional
-    public ApiResponse saveMessage(MessageDto messageDto) {
-        checkUserExists(messageDto.userId());
-        checkRentalExists(messageDto.rentalId());
+    public ApiResponse saveMessage(MessageRequestDto messageRequestDto) {
+        checkUserExists(messageRequestDto.userId());
+        checkRentalExists(messageRequestDto.rentalId());
 
-        Message message = messageMapper.toEntity(messageDto);
+        Message message = messageMapper.toEntity(messageRequestDto);
         messageRepository.save(message);
 
         return new ApiResponse(ApiResponseMessage.MESSAGE_SEND_SUCCESS);

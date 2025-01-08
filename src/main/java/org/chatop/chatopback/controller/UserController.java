@@ -5,9 +5,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.user.UserDto;
+import org.chatop.chatopback.dto.user.UserResponseDto;
 import org.chatop.chatopback.service.UserService;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@SecurityRequirement(name = "tokenAuth")
 public class UserController {
 
     private final UserService userService;
@@ -29,13 +31,15 @@ public class UserController {
             @Parameter(name = "id", description = "ID of the user to be retrieved", required = true, example = "1"),
     }, responses = {
             @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = UserDto.class))),
+                    schema = @Schema(implementation = UserResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<UserDto> getUserById(@PathVariable @Positive Integer id) {
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable @Positive Integer id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 }

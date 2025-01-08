@@ -9,8 +9,9 @@ import java.io.Serializable;
 /**
  * DTO for {@link org.chatop.chatopback.entity.Message}
  */
-public record MessageDto(
+public record MessageRequestDto(
 
+        // TODO: improve validation constraints
         @NotBlank
         String message,
 

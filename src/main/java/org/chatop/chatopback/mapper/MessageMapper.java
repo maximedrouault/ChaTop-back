@@ -1,6 +1,6 @@
 package org.chatop.chatopback.mapper;
 
-import org.chatop.chatopback.dto.message.MessageDto;
+import org.chatop.chatopback.dto.message.MessageRequestDto;
 import org.chatop.chatopback.entity.Message;
 import org.mapstruct.*;
 
@@ -9,10 +9,10 @@ public interface MessageMapper {
 
     @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "rentalId", target = "rental.id")
-    Message toEntity(MessageDto messageDto);
+    Message toEntity(MessageRequestDto messageRequestDto);
 
-    MessageDto toDto(Message message);
+    MessageRequestDto toDto(Message message);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Message partialUpdate(MessageDto messageDto, @MappingTarget Message message);
+    Message partialUpdate(MessageRequestDto messageRequestDto, @MappingTarget Message message);
 }

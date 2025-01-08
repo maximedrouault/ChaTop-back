@@ -3,7 +3,7 @@ package org.chatop.chatopback.service;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.rental.CreateRentalRequestDto;
 import org.chatop.chatopback.dto.rental.RentalResponseDto;
-import org.chatop.chatopback.dto.rental.RentalsDto;
+import org.chatop.chatopback.dto.rental.RentalsResponseDto;
 import org.chatop.chatopback.dto.rental.UpdateRentalRequestDto;
 import org.chatop.chatopback.entity.Rental;
 import org.chatop.chatopback.exception.EntityPersistenceException;
@@ -32,7 +32,7 @@ public class RentalService {
     private final AwsS3Service awsS3Service;
 
 
-    public RentalsDto getAllRentals() {
+    public RentalsResponseDto getAllRentals() {
         List<RentalResponseDto> rentals = rentalRepository.findAll()
                 .parallelStream()
                 .map(rental -> {
@@ -46,7 +46,7 @@ public class RentalService {
             throw new RentalsNotFoundException();
         }
 
-        return new RentalsDto(rentals);
+        return new RentalsResponseDto(rentals);
     }
 
     public RentalResponseDto getRentalById(Integer id) {

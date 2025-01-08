@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.message.MessageDto;
+import org.chatop.chatopback.dto.message.MessageRequestDto;
 import org.chatop.chatopback.response.ApiResponse;
 import org.chatop.chatopback.service.MessageService;
 import org.springframework.http.ProblemDetail;
@@ -27,7 +27,7 @@ public class MessageController {
     @Operation(summary = "Save a message",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Message to be saved", required = true,
                     content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = MessageDto.class))),
+                    schema = @Schema(implementation = MessageRequestDto.class))),
             responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Message saved",
                     content = @Content(mediaType = "application/json",
@@ -37,10 +37,13 @@ public class MessageController {
                     schema = @Schema(implementation = ProblemDetail.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "User or Rental not found",
                     content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<ApiResponse> saveMessage(@RequestBody @Valid MessageDto messageDto) {
-        ApiResponse apiResponse = messageService.saveMessage(messageDto);
+    public ResponseEntity<ApiResponse> saveMessage(@RequestBody @Valid MessageRequestDto messageRequestDto) {
+        ApiResponse apiResponse = messageService.saveMessage(messageRequestDto);
 
         return ResponseEntity.ok().body(apiResponse);
     }

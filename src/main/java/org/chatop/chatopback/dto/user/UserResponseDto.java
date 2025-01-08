@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 /**
  * DTO for {@link org.chatop.chatopback.entity.User}
  */
-public record UserDto(
+public record UserResponseDto(
 
         Integer id,
         String name,

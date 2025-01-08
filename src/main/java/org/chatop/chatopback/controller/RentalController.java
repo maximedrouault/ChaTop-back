@@ -6,12 +6,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.rental.CreateRentalRequestDto;
 import org.chatop.chatopback.dto.rental.RentalResponseDto;
-import org.chatop.chatopback.dto.rental.RentalsDto;
+import org.chatop.chatopback.dto.rental.RentalsResponseDto;
 import org.chatop.chatopback.dto.rental.UpdateRentalRequestDto;
 import org.chatop.chatopback.service.RentalService;
 import org.chatop.chatopback.validation.ImageFile;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@SecurityRequirement(name = "tokenAuth")
 public class RentalController {
 
     private final RentalService rentalService;
@@ -31,11 +33,13 @@ public class RentalController {
     @GetMapping("/rentals")
     @Operation(summary = "Get all Rentals", responses = {
             @ApiResponse(responseCode = "200", description = "Rentals found", content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = RentalsDto.class))),
+                    schema = @Schema(implementation = RentalsResponseDto.class))),
             @ApiResponse(responseCode = "404", description = "Rentals not found", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<RentalsDto> getAllRentals() {
+    public ResponseEntity<RentalsResponseDto> getAllRentals() {
         return ResponseEntity.ok(rentalService.getAllRentals());
     }
 
@@ -48,6 +52,8 @@ public class RentalController {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "404", description = "Rental not found", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<RentalResponseDto> getRentalById(@PathVariable @Positive Integer id) {
@@ -64,6 +70,8 @@ public class RentalController {
                     schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "500", description = "Internal Server Error",
                     content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<org.chatop.chatopback.response.ApiResponse> createRental(
@@ -85,6 +93,8 @@ public class RentalController {
                     schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "500", description = "Internal Server Error",
                     content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<org.chatop.chatopback.response.ApiResponse> updateRental(

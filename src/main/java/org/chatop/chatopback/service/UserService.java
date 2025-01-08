@@ -1,7 +1,7 @@
 package org.chatop.chatopback.service;
 
 import lombok.RequiredArgsConstructor;
-import org.chatop.chatopback.dto.user.UserDto;
+import org.chatop.chatopback.dto.user.UserResponseDto;
 import org.chatop.chatopback.exception.UserNotFoundException;
 import org.chatop.chatopback.mapper.UserMapper;
 import org.chatop.chatopback.repository.UserRepository;
@@ -15,7 +15,7 @@ public class UserService {
     private final UserMapper userMapper;
 
 
-    public UserDto getUserById(Integer id) {
+    public UserResponseDto getUserById(Integer id) {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
                 .orElseThrow(() -> new UserNotFoundException(id));
