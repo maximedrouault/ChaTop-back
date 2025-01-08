@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -39,8 +40,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseStatusException handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
-                                                                         HttpServletRequest request) {
+    public ResponseStatusException handleMethodArgumentNotValidException(MethodArgumentNotValidException exception, HttpServletRequest request) {
         log.warn(formatLogMessage(exception.getMessage(), null, request.getRequestURI()));
 
         return new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -88,6 +88,13 @@ public class GlobalExceptionHandler {
         log.warn(formatLogMessage(exception.getMessage(), null, request.getRequestURI()));
 
         return new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseStatusException handleBadCredentialsException(BadCredentialsException exception) {
+        log.warn(exception.getMessage());
+
+        return new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)

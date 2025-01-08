@@ -33,7 +33,6 @@ public class RentalService {
 
 
     public RentalsDto getAllRentals() {
-
         List<RentalResponseDto> rentals = rentalRepository.findAll()
                 .parallelStream()
                 .map(rental -> {
@@ -51,7 +50,6 @@ public class RentalService {
     }
 
     public RentalResponseDto getRentalById(Integer id) {
-
         return rentalRepository.findById(id)
                 .map(rental -> {
                     URL signedPictureUrl = generateSignedPictureUrl(rental.getPicture());
@@ -63,7 +61,6 @@ public class RentalService {
 
     @Transactional
     public ApiResponse createRental(CreateRentalRequestDto createRentalRequestDto, MultipartFile pictureFile) {
-
         String key = Optional.ofNullable(pictureFile.getContentType())
                 .map(mimeType -> "rental_" + UUID.randomUUID() + "." + mimeType.split("/")[1])
                 .orElseThrow(() -> new InvalidMimeTypeException(pictureFile));
@@ -85,7 +82,6 @@ public class RentalService {
     }
 
     public ApiResponse updateRental(Integer id, UpdateRentalRequestDto updateRentalRequestDto) {
-
         return rentalRepository.findById(id)
                 .map(rental -> {
                     Rental updatedRental = rentalMapper.partialUpdate(updateRentalRequestDto, rental);

@@ -36,7 +36,6 @@ public class UserController {
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<UserDto> getUserById(@PathVariable @Positive Integer id) {
-
         return ResponseEntity.ok(userService.getUserById(id));
     }
 }

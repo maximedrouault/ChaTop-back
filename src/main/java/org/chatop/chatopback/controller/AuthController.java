@@ -17,13 +17,12 @@ public class AuthController {
 
 
     @GetMapping("/me")
-    public ResponseEntity<Void> login() {
+    public ResponseEntity<Void> authCheck() {
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> getAuthToken(@Valid @RequestBody LoginRequestDto loginRequestDto) {
-
         return ResponseEntity.ok(authService.getAuthToken(loginRequestDto));
     }
 }

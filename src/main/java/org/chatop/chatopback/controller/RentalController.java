@@ -36,7 +36,6 @@ public class RentalController {
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<RentalsDto> getAllRentals() {
-
         return ResponseEntity.ok(rentalService.getAllRentals());
     }
 
@@ -52,7 +51,6 @@ public class RentalController {
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<RentalResponseDto> getRentalById(@PathVariable @Positive Integer id) {
-
         return ResponseEntity.ok(rentalService.getRentalById(id));
     }
 

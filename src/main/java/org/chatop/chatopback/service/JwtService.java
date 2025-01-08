@@ -20,7 +20,6 @@ public class JwtService {
 
 
     public String generateToken(Authentication authentication) {
-
         Instant now = Instant.now();
         Instant expiration = now.plus(1, ChronoUnit.DAYS);
 

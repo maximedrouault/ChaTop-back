@@ -25,12 +25,10 @@ public class AwsS3Service {
 
 
     public URL createSignedGetURL(String key) {
-
         return s3Template.createSignedGetURL(bucketName, key, signedUrlExpiration);
     }
 
     public void uploadFile(String key, MultipartFile file) {
-
         try {
             s3Template.upload(bucketName, key, file.getInputStream());
         } catch (Exception exception) {
@@ -39,7 +37,6 @@ public class AwsS3Service {
     }
 
     public void deleteFile(String key) {
-
         try {
             s3Template.deleteObject(bucketName, key);
         } catch (Exception exception) {

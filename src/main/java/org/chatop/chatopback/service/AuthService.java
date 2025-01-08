@@ -17,7 +17,6 @@ public class AuthService {
 
 
     public AuthResponseDto getAuthToken(LoginRequestDto loginRequestDto) {
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDto.email(),
