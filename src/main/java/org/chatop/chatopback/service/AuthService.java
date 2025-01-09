@@ -3,9 +3,13 @@ package org.chatop.chatopback.service;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.auth.AuthResponseDto;
 import org.chatop.chatopback.dto.auth.LoginRequestDto;
+import org.chatop.chatopback.entity.User;
+import org.chatop.chatopback.exception.UserNotFoundException;
+import org.chatop.chatopback.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +18,7 @@ public class AuthService {
 
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
 
 
     public AuthResponseDto getAuthToken(LoginRequestDto loginRequestDto) {
@@ -27,5 +32,12 @@ public class AuthService {
         String token = jwtService.generateToken(authentication);
 
         return new AuthResponseDto(token);
+    }
+
+    public User getAuthenticatedUser() {
+        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return userRepository.findUserByEmail(authenticatedUserName)
+                .orElseThrow(() -> new UserNotFoundException(authenticatedUserName));
     }
 }

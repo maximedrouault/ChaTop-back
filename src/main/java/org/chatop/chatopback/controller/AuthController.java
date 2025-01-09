@@ -10,6 +10,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.auth.AuthResponseDto;
 import org.chatop.chatopback.dto.auth.LoginRequestDto;
+import org.chatop.chatopback.dto.user.UserResponseDto;
+import org.chatop.chatopback.entity.User;
+import org.chatop.chatopback.mapper.UserMapper;
 import org.chatop.chatopback.service.AuthService;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +24,23 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserMapper userMapper;
 
 
     @GetMapping("/me")
     @SecurityRequirement(name = "tokenAuth")
-    @Operation(summary = "Check if the user is authenticated", responses = {
+    @Operation(summary = "Get authenticated user information", responses = {
             @ApiResponse(responseCode = "200", description = "User is authenticated"),
             @ApiResponse(responseCode = "401", description = "User is not authenticated", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<Void> authCheck() {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserResponseDto> getAuthenticatedUserInfo() {
+        User authenticatedUser = authService.getAuthenticatedUser();
+        UserResponseDto userResponseDto = userMapper.toDto(authenticatedUser);
+
+        return ResponseEntity.ok().body(userResponseDto);
     }
 
     @PostMapping("/login")
