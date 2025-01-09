@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.chatop.chatopback.dto.auth.AuthResponseDto;
 import org.chatop.chatopback.dto.auth.LoginRequestDto;
+import org.chatop.chatopback.dto.auth.RegisterRequestDto;
 import org.chatop.chatopback.dto.user.UserResponseDto;
 import org.chatop.chatopback.entity.User;
 import org.chatop.chatopback.mapper.UserMapper;
@@ -57,5 +58,23 @@ public class AuthController {
     })
     public ResponseEntity<AuthResponseDto> getAuthToken(@Valid @RequestBody LoginRequestDto loginRequestDto) {
         return ResponseEntity.ok(authService.getAuthToken(loginRequestDto));
+    }
+
+    @PostMapping("/register")
+    @Operation(summary = "Register a new user", parameters = {
+            @Parameter(name = "registerRequestDto", description = "The register request with User credentials", required = true,
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RegisterRequestDto.class)))
+    }, responses = {
+            @ApiResponse(responseCode = "200", description = "User registered", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = AuthResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "409", description = "User already exists", content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class)))
+    })
+    public ResponseEntity<AuthResponseDto> registerUser(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
+        return ResponseEntity.ok(authService.registerUser(registerRequestDto));
     }
 }

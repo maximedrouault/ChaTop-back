@@ -97,6 +97,13 @@ public class GlobalExceptionHandler {
         return new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseStatusException handleUserAlreadyExistsException(UserAlreadyExistsException exception, HttpServletRequest request) {
+        log.warn(formatLogMessage(exception.getMessage(), null, request.getRequestURI()));
+
+        return new ResponseStatusException(HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseStatusException handleGenericException(Exception exception, HttpServletRequest request) {
         log.error("Unexpected error occurred: {}, Cause: {}, Path: {}",

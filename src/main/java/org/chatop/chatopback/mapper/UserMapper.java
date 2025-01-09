@@ -1,5 +1,6 @@
 package org.chatop.chatopback.mapper;
 
+import org.chatop.chatopback.dto.auth.RegisterRequestDto;
 import org.chatop.chatopback.dto.user.UserResponseDto;
 import org.chatop.chatopback.entity.User;
 import org.mapstruct.*;
@@ -7,7 +8,7 @@ import org.mapstruct.*;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
-    User toEntity(UserResponseDto userResponseDto);
+    User toEntity(RegisterRequestDto registerRequestDto);
 
     UserResponseDto toDto(User user);
 
