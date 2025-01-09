@@ -31,11 +31,6 @@ public record CreateRentalRequestDto(
 
         @NotBlank
         @Size(max = 2000)
-        String description,
-
-//        @NotNull  // TODO: check this line when security is implemented
-        @Positive
-        @Max(Integer.MAX_VALUE)
-        Integer ownerId
+        String description
 
 ) implements Serializable {}

@@ -6,6 +6,7 @@ import org.chatop.chatopback.dto.rental.RentalResponseDto;
 import org.chatop.chatopback.dto.rental.RentalsResponseDto;
 import org.chatop.chatopback.dto.rental.UpdateRentalRequestDto;
 import org.chatop.chatopback.entity.Rental;
+import org.chatop.chatopback.entity.User;
 import org.chatop.chatopback.exception.EntityPersistenceException;
 import org.chatop.chatopback.exception.InvalidMimeTypeException;
 import org.chatop.chatopback.exception.RentalNotFoundException;
@@ -30,6 +31,7 @@ public class RentalService {
     private final RentalRepository rentalRepository;
     private final RentalMapper rentalMapper;
     private final AwsS3Service awsS3Service;
+    private final AuthService authService;
 
 
     public RentalsResponseDto getAllRentals() {
@@ -61,6 +63,7 @@ public class RentalService {
 
     @Transactional
     public ApiResponse createRental(CreateRentalRequestDto createRentalRequestDto, MultipartFile pictureFile) {
+        User authenticatedUser = authService.getAuthenticatedUser();
         String key = Optional.ofNullable(pictureFile.getContentType())
                 .map(mimeType -> "rental_" + UUID.randomUUID() + "." + mimeType.split("/")[1])
                 .orElseThrow(() -> new InvalidMimeTypeException(pictureFile));
@@ -69,6 +72,7 @@ public class RentalService {
             awsS3Service.uploadFile(key, pictureFile);
 
             Rental rental = rentalMapper.toEntity(createRentalRequestDto);
+            rental.setOwner(authenticatedUser);
             rental.setPicture(key);
 
             rentalRepository.save(rental);

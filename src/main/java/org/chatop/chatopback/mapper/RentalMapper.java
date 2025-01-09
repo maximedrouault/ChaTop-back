@@ -11,7 +11,6 @@ import java.net.URL;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RentalMapper {
 
-    @Mapping(source = "ownerId", target = "owner.id", defaultValue = "1") // TODO: remove default value when authentication is implemented
     @Mapping(target = "picture", ignore = true)
     Rental toEntity(CreateRentalRequestDto createRentalRequestDto);
 
