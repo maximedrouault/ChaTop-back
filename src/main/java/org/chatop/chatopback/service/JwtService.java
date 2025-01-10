@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Service class for generating JWT tokens.
+ */
 @Service
 @RequiredArgsConstructor
 public class JwtService {
@@ -19,6 +22,12 @@ public class JwtService {
     private final JwtEncoder jwtEncoder;
 
 
+    /**
+     * Generates a JWT token for the given authentication.
+     *
+     * @param authentication the authentication object containing user details
+     * @return the generated JWT token as a String
+     */
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
         Instant expiration = now.plus(1, ChronoUnit.DAYS);

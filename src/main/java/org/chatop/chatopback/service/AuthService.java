@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Service class for handling authentication-related operations.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -29,6 +32,12 @@ public class AuthService {
     private final BCryptPasswordEncoder passwordEncoder;
 
 
+    /**
+     * Authenticates a user and generates a JWT token.
+     *
+     * @param loginRequestDto the login request with the user's email and password
+     * @return the authentication response data transfer object containing the JWT token
+     */
     public AuthResponseDto getAuthToken(LoginRequestDto loginRequestDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -42,6 +51,12 @@ public class AuthService {
         return new AuthResponseDto(token);
     }
 
+    /**
+     * Retrieves the currently authenticated user.
+     *
+     * @return the authenticated user
+     * @throws UserNotFoundException if the authenticated user is not found
+     */
     public User getAuthenticatedUser() {
         String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -49,6 +64,13 @@ public class AuthService {
                 .orElseThrow(() -> new UserNotFoundException(authenticatedUserName));
     }
 
+    /**
+     * Registers a new user and returns an authentication response.
+     *
+     * @param registerRequestDto the registration request with the user's details
+     * @return the authentication response data transfer object containing the JWT token
+     * @throws UserAlreadyExistsException if a user with the given email already exists
+     */
     public AuthResponseDto registerUser(RegisterRequestDto registerRequestDto) {
         return Optional.of(registerRequestDto.email())
                 .filter(email -> !userRepository.existsUserByEmail(email))

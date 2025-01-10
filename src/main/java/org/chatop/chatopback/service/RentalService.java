@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Service class for handling rental-related operations.
+ */
 @Service
 @RequiredArgsConstructor
 public class RentalService {
@@ -34,6 +37,12 @@ public class RentalService {
     private final AuthService authService;
 
 
+    /**
+     * Retrieves all rentals.
+     *
+     * @return a RentalsResponseDto containing a list of all rentals
+     * @throws RentalsNotFoundException if no rentals are found
+     */
     public RentalsResponseDto getAllRentals() {
         List<RentalResponseDto> rentals = rentalRepository.findAll()
                 .parallelStream()
@@ -51,6 +60,13 @@ public class RentalService {
         return new RentalsResponseDto(rentals);
     }
 
+    /**
+     * Retrieves a rental by its ID.
+     *
+     * @param id the ID of the rental to retrieve
+     * @return a RentalResponseDto containing the rental details
+     * @throws RentalNotFoundException if the rental is not found
+     */
     public RentalResponseDto getRentalById(Integer id) {
         return rentalRepository.findById(id)
                 .map(rental -> {
@@ -61,6 +77,15 @@ public class RentalService {
                 .orElseThrow(() -> new RentalNotFoundException(id));
     }
 
+    /**
+     * Creates a new rental.
+     *
+     * @param createRentalRequestDto the DTO containing rental details
+     * @param pictureFile the picture file to be uploaded
+     * @return an ApiResponse indicating the result of the operation
+     * @throws InvalidMimeTypeException if the picture file has an invalid MIME type
+     * @throws EntityPersistenceException if there is an error during persistence
+     */
     @Transactional
     public ApiResponse createRental(CreateRentalRequestDto createRentalRequestDto, MultipartFile pictureFile) {
         User authenticatedUser = authService.getAuthenticatedUser();
@@ -85,6 +110,14 @@ public class RentalService {
         }
     }
 
+    /**
+     * Updates an existing rental.
+     *
+     * @param id the ID of the rental to update
+     * @param updateRentalRequestDto the DTO containing updated rental details
+     * @return an ApiResponse indicating the result of the operation
+     * @throws RentalNotFoundException if the rental is not found
+     */
     public ApiResponse updateRental(Integer id, UpdateRentalRequestDto updateRentalRequestDto) {
         return rentalRepository.findById(id)
                 .map(rental -> {
@@ -98,6 +131,12 @@ public class RentalService {
     }
 
 
+    /**
+     * Generates a signed URL for accessing a picture.
+     *
+     * @param key the key of the picture in the storage
+     * @return the signed URL
+     */
     private URL generateSignedPictureUrl(String key) {
         return awsS3Service.createSignedGetURL(key);
     }

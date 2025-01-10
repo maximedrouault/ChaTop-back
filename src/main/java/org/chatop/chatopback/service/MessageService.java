@@ -13,6 +13,9 @@ import org.chatop.chatopback.response.ApiResponseMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Service class for handling message-related operations.
+ */
 @Service
 @RequiredArgsConstructor
 public class MessageService {
@@ -23,6 +26,12 @@ public class MessageService {
     private final AuthService authService;
 
 
+    /**
+     * Saves a message to the database.
+     *
+     * @param messageRequestDto the DTO containing message details
+     * @return an ApiResponse indicating the result of the operation
+     */
     @Transactional
     public ApiResponse saveMessage(MessageRequestDto messageRequestDto) {
         User authenticatedUser = authService.getAuthenticatedUser();
@@ -36,6 +45,12 @@ public class MessageService {
     }
 
 
+    /**
+     * Checks if a rental exists by its ID.
+     *
+     * @param rentalId the ID of the rental to check
+     * @throws RentalNotFoundException if the rental does not exist
+     */
     private void checkRentalExists(Integer rentalId) {
         if (!rentalRepository.existsById(rentalId)) {
             throw new RentalNotFoundException(rentalId);

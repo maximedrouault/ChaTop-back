@@ -2,6 +2,9 @@ package org.chatop.chatopback.response;
 
 import lombok.experimental.UtilityClass;
 
+/**
+ * Utility class that contains constant messages for API responses.
+ */
 @UtilityClass
 public class ApiResponseMessage {
 
