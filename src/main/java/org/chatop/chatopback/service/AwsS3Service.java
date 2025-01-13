@@ -21,7 +21,7 @@ public class AwsS3Service {
     private final S3Template s3Template;
 
 
-    @Value("${aws.bucket.name}")
+    @Value("${AWS_BUCKET_NAME}")
     private String bucketName;
 
     private final Duration signedUrlExpiration = Duration.ofMinutes(5);

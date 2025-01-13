@@ -5,8 +5,8 @@ spring:
 
   # Database source configuration
   datasource:
-    url: jdbc:mysql://localhost:3306/chatop?serverTimezone=UTC
-    username: root
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC
+    username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
   # Jackson property naming strategy configuration
@@ -20,7 +20,7 @@ spring:
         access-key: ${AWS_ACCESS_KEY_ID}
         secret-key: ${AWS_SECRET_ACCESS_KEY}
       region:
-        static: eu-west-3
+        static: ${AWS_REGION}
       s3:
         bucket: ${AWS_BUCKET_NAME}
 
@@ -32,7 +32,7 @@ spring:
 
 # Server configuration
 server:
-  port: 3001
+  port: ${SERVER_PORT}
 
   # Error configuration
   error:
@@ -42,7 +42,3 @@ server:
 logging:
   level:
     org.hibernate.orm.connections.pooling: WARN
-
-# Jwt configuration
-jwt:
-  key: ${JWT_KEY}
