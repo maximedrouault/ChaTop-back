@@ -12,6 +12,8 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.NoSuchAlgorithmException;
+
 @RestControllerAdvice
 @Hidden
 @Log4j2
@@ -109,6 +111,13 @@ public class GlobalExceptionHandler {
         log.warn(formatLogMessage(exception.getMessage(), null, request.getRequestURI()));
 
         return new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoSuchAlgorithmException.class)
+    public ResponseStatusException handleNoSuchAlgorithmException(NoSuchAlgorithmException exception) {
+        log.error(exception.getMessage());
+
+        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(Exception.class)

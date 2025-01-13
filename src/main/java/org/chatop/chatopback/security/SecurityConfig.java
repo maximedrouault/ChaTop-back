@@ -1,7 +1,6 @@
 package org.chatop.chatopback.security;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,13 +17,20 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 @Configuration
 public class SecurityConfig {
 
-    @Value("${jwt.key}")
-    private String jwtKey;
+    private final String jwtKey;
+
+    public SecurityConfig() throws NoSuchAlgorithmException {
+        this.jwtKey = generateSecretKey();
+    }
 
 
     @Bean
@@ -63,5 +69,14 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+
+
+    private String generateSecretKey() throws NoSuchAlgorithmException {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
+        keyGenerator.init(256);
+        SecretKey secretKey = keyGenerator.generateKey();
+
+        return Base64.getEncoder().encodeToString(secretKey.getEncoded());
     }
 }
