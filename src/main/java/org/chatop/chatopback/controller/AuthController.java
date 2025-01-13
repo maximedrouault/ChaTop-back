@@ -17,6 +17,7 @@ import org.chatop.chatopback.mapper.UserMapper;
 import org.chatop.chatopback.service.AuthService;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,8 +38,8 @@ public class AuthController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<UserResponseDto> getAuthenticatedUserInfo() {
-        User authenticatedUser = authService.getAuthenticatedUser();
+    public ResponseEntity<UserResponseDto> getAuthenticatedUserInfo(JwtAuthenticationToken jwtAuthenticationToken) {
+        User authenticatedUser = authService.getAuthenticatedUser(jwtAuthenticationToken);
         UserResponseDto userResponseDto = userMapper.toDto(authenticatedUser);
 
         return ResponseEntity.ok().body(userResponseDto);

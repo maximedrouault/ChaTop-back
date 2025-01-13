@@ -10,6 +10,7 @@ import org.chatop.chatopback.repository.MessageRepository;
 import org.chatop.chatopback.repository.RentalRepository;
 import org.chatop.chatopback.response.ApiResponse;
 import org.chatop.chatopback.response.ApiResponseMessage;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +34,8 @@ public class MessageService {
      * @return an ApiResponse indicating the result of the operation
      */
     @Transactional
-    public ApiResponse saveMessage(MessageRequestDto messageRequestDto) {
-        User authenticatedUser = authService.getAuthenticatedUser();
+    public ApiResponse saveMessage(MessageRequestDto messageRequestDto, JwtAuthenticationToken jwtAuthenticationToken) {
+        User authenticatedUser = authService.getAuthenticatedUser(jwtAuthenticationToken);
         checkRentalExists(messageRequestDto.rentalId());
 
         Message message = messageMapper.toEntity(messageRequestDto);

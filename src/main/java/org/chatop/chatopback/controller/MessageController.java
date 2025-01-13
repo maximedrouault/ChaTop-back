@@ -11,6 +11,7 @@ import org.chatop.chatopback.response.ApiResponse;
 import org.chatop.chatopback.service.MessageService;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,8 +45,8 @@ public class MessageController {
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class)))
     })
-    public ResponseEntity<ApiResponse> saveMessage(@RequestBody @Valid MessageRequestDto messageRequestDto) {
-        ApiResponse apiResponse = messageService.saveMessage(messageRequestDto);
+    public ResponseEntity<ApiResponse> saveMessage(@RequestBody @Valid MessageRequestDto messageRequestDto, JwtAuthenticationToken jwtAuthenticationToken) {
+        ApiResponse apiResponse = messageService.saveMessage(messageRequestDto, jwtAuthenticationToken);
 
         return ResponseEntity.ok().body(apiResponse);
     }

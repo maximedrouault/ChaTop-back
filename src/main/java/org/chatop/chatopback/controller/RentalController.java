@@ -18,6 +18,7 @@ import org.chatop.chatopback.service.RentalService;
 import org.chatop.chatopback.validation.ImageFile;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,9 +77,10 @@ public class RentalController {
     })
     public ResponseEntity<org.chatop.chatopback.response.ApiResponse> createRental(
             @Valid @ModelAttribute CreateRentalRequestDto createRentalRequestDto,
-            @RequestPart("picture") @ImageFile MultipartFile pictureFile) {
+            @RequestPart("picture") @ImageFile MultipartFile pictureFile,
+            JwtAuthenticationToken jwtAuthenticationToken) {
 
-        return ResponseEntity.ok(rentalService.createRental(createRentalRequestDto, pictureFile));
+        return ResponseEntity.ok(rentalService.createRental(createRentalRequestDto, pictureFile, jwtAuthenticationToken));
     }
 
     @PutMapping("/rentals/{id}")

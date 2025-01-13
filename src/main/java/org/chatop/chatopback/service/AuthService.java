@@ -12,8 +12,8 @@ import org.chatop.chatopback.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -57,8 +57,8 @@ public class AuthService {
      * @return the authenticated user
      * @throws UserNotFoundException if the authenticated user is not found
      */
-    public User getAuthenticatedUser() {
-        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+    public User getAuthenticatedUser(JwtAuthenticationToken jwtAuthenticationToken) {
+        String authenticatedUserName = jwtAuthenticationToken.getName();
 
         return userRepository.findUserByEmail(authenticatedUserName)
                 .orElseThrow(() -> new UserNotFoundException(authenticatedUserName));

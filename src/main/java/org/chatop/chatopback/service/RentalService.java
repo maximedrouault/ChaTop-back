@@ -15,6 +15,7 @@ import org.chatop.chatopback.mapper.RentalMapper;
 import org.chatop.chatopback.repository.RentalRepository;
 import org.chatop.chatopback.response.ApiResponse;
 import org.chatop.chatopback.response.ApiResponseMessage;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -87,8 +88,11 @@ public class RentalService {
      * @throws EntityPersistenceException if there is an error during persistence
      */
     @Transactional
-    public ApiResponse createRental(CreateRentalRequestDto createRentalRequestDto, MultipartFile pictureFile) {
-        User authenticatedUser = authService.getAuthenticatedUser();
+    public ApiResponse createRental(CreateRentalRequestDto createRentalRequestDto,
+                                    MultipartFile pictureFile,
+                                    JwtAuthenticationToken jwtAuthenticationToken) {
+
+        User authenticatedUser = authService.getAuthenticatedUser(jwtAuthenticationToken);
         String key = Optional.ofNullable(pictureFile.getContentType())
                 .map(mimeType -> "rental_" + UUID.randomUUID() + "." + mimeType.split("/")[1])
                 .orElseThrow(() -> new InvalidMimeTypeException(pictureFile));
@@ -119,6 +123,7 @@ public class RentalService {
      * @throws RentalNotFoundException if the rental is not found
      */
     public ApiResponse updateRental(Integer id, UpdateRentalRequestDto updateRentalRequestDto) {
+
         return rentalRepository.findById(id)
                 .map(rental -> {
                     Rental updatedRental = rentalMapper.partialUpdate(updateRentalRequestDto, rental);
